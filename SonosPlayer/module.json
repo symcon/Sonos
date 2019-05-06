@@ -1,0 +1,14 @@
+{
+	"id": "{53915378-C64C-4566-8369-618B6ECDB5B4}",
+	"name": "Sonos Player",
+	"type": 3,
+	"vendor": "Sonos",
+	"aliases": 
+	[
+		"Sonos Player"
+	],
+	"parentRequirements": ["{1E587107-664D-BA29-59E0-D9167875BE7E}"],
+	"childRequirements": [],
+	"implemented": ["{4E70D5E9-7519-6728-2B3B-C203AF1C20BF}"],
+	"prefix": "SONOS"
+}

@@ -1,0 +1,6 @@
+{
+	"actions":
+	[
+		{ "type": "Button", "label": "Play", "onClick": "SONOS_Play($id);" }
+	]
+}

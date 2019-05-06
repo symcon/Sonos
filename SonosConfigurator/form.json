@@ -1,0 +1,22 @@
+{
+    "elements": [
+        {
+            "type": "ValidationTextBox",
+            "name": "HouseholdID",
+            "caption": "HHID"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Configurator",
+            "name": "Configurator",
+            "caption": "Configurator",
+            "delete": false,
+            "sort": {
+                "column": "name",
+                "direction": "ascending"
+            },
+            "values": []
+        }
+    ]
+}

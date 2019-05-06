@@ -1,0 +1,10 @@
+{
+	"elements": [
+		{ "type": "Button", "label": "Register", "onClick": "echo SONOS_Register($id);" }
+	],
+	"actions":
+	[
+		{ "type": "Label" },
+		{ "type": "Label" }
+	]
+}

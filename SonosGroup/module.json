@@ -1,0 +1,14 @@
+{
+	"id": "{5C73A40C-1DA4-47CD-BBC4-55083FE6BE43}",
+	"name": "Sonos Group",
+	"type": 3,
+	"vendor": "Sonos",
+	"aliases": 
+	[
+		"Sonos Group"
+	],
+	"parentRequirements": ["{1E587107-664D-BA29-59E0-D9167875BE7E}"],
+	"childRequirements": [],
+	"implemented": ["{4E70D5E9-7519-6728-2B3B-C203AF1C20BF}"],
+	"prefix": "SONOS"
+}

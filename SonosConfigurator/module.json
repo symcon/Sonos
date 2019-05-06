@@ -1,0 +1,14 @@
+{
+    "id": "{751A1E6A-76D5-4EF1-B15D-D7A0CECC75D0}",
+    "name": "Sonos Configurator",
+    "type": 4,
+    "vendor": "Sonos",
+    "aliases": 
+    [
+        "Sonos Configurator"
+    ],
+	"parentRequirements": ["{1E587107-664D-BA29-59E0-D9167875BE7E}"],
+	"childRequirements": [],
+	"implemented": ["{4E70D5E9-7519-6728-2B3B-C203AF1C20BF}"],
+    "prefix": "SONOS"
+}
