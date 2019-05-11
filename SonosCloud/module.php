@@ -181,7 +181,8 @@ class SonosCloud extends IPSModule
         $opts = [
           'http'=> [
             'method' => 'GET',
-            'header' => 'Authorization: Bearer ' . $this->FetchAccessToken() . "\r\n" . 'Content-Type: application/x-www-form-urlencoded' . "\r\n"
+            'header' => 'Authorization: Bearer ' . $this->FetchAccessToken() . "\r\n" . 'Content-Type: application/x-www-form-urlencoded' . "\r\n",
+            "ignore_errors" => true
           ]
         ];
         $context = stream_context_create($opts);
@@ -195,7 +196,8 @@ class SonosCloud extends IPSModule
           'http'=> [
             'method'  => 'POST',
             'header'  => 'Authorization: Bearer ' . $this->FetchAccessToken() . "\r\n" . 'Content-Type: application/json' . "\r\n" . 'Content-Length: ' . strlen($content) . "\r\n",
-            'content' => json_encode($content)
+            'content' => $content,
+            "ignore_errors" => true
           ]
         ];
         $context = stream_context_create($opts);
