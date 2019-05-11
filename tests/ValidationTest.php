@@ -16,7 +16,6 @@ class ValidationTest extends TestCaseSymconValidation
         $this->validateModule(__DIR__ . '/../SonosCloud');
         $this->validateModule(__DIR__ . '/../SonosConfigurator');
         $this->validateModule(__DIR__ . '/../SonosDiscovery');
-        $this->validateModule(__DIR__ . '/../SonosGroup');
         $this->validateModule(__DIR__ . '/../SonosPlayer');
     }
 }
