@@ -4,7 +4,7 @@
 <a href="https://styleci.io/repos/185150981/"><img src="https://styleci.io/repos/185150981/shield" alt="StyleCI"></a>
 <a href="https://travis-ci.org/symcon/Sonos"><img src="https://img.shields.io/travis/symcon/Sonos/master.svg?style=flat-square" alt="Build status"></a>
 
-Folgende Module beinhaltet das Assistant Repository:
+Folgende Module beinhaltet das Sonos Repository:
 
 - __Sonos__ ([Dokumentation](https://www.symcon.de/service/dokumentation/modulreferenz/sonos/))  
     Verbindet IP-Symcon mit Sonos Produkten
