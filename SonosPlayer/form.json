@@ -1,6 +1,20 @@
 {
+	"elements": [
+		{
+			"type": "ValidationTextBox",
+			"name": "HouseholdID",
+			"caption": "HHID"
+		},
+		{
+			"type": "ValidationTextBox",
+			"name": "PlayerID",
+			"caption": "PlayerID"
+		}
+	],
 	"actions":
 	[
-		
+		{
+			"type": "TestCenter"
+		}
 	]
 }
