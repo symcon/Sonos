@@ -1,20 +1,24 @@
 {
-	"elements": [
-		{
-			"type": "ValidationTextBox",
-			"name": "HouseholdID",
-			"caption": "HHID"
-		},
-		{
-			"type": "ValidationTextBox",
-			"name": "PlayerID",
-			"caption": "PlayerID"
-		}
-	],
-	"actions":
-	[
-		{
-			"type": "TestCenter"
-		}
-	]
+    "elements": [
+        {
+            "type": "ValidationTextBox",
+            "name": "HouseholdID",
+            "caption": "HHID"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "PlayerID",
+            "caption": "PlayerID"
+        }
+    ],
+    "actions": [
+        {
+            "type": "TestCenter"
+        },
+        {
+            "type": "Button",
+            "caption": "Play Clip (Currently only for Sonos One/Beam)",
+            "onClick": "SONOS_PlayClip($id);"
+        }
+    ]
 }
