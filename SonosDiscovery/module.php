@@ -7,7 +7,7 @@ include_once __DIR__ . '/../libs/data.php';
 class SonosDiscovery extends IPSModule
 {
     use DataHelper;
-    
+
     public function Create()
     {
         //Never delete this line!

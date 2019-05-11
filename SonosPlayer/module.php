@@ -9,7 +9,7 @@ class SonosPlayer extends IPSModule
 {
     use ProfileHelper;
     use DataHelper;
-    
+
     public function Create()
     {
         //Never delete this line!
@@ -24,21 +24,20 @@ class SonosPlayer extends IPSModule
         $this->RegisterAttributeString('GroupID', '');
 
         //Create profiles
-        $this->RegisterProfileIntegerEx("Control.SONOS", "Information", "", "", [
-            [0, "Prev",  "", -1],
-            [1, "Play",  "", -1],
-            [2, "Pause", "", -1],
+        $this->RegisterProfileIntegerEx('Control.SONOS', 'Information', '', '', [
+            [0, 'Prev',  '', -1],
+            [1, 'Play',  '', -1],
+            [2, 'Pause', '', -1],
             //[3, "Stop",  "", -1],
-            [4, "Next",  "", -1]
+            [4, 'Next',  '', -1]
         ]);
-        
-        //Create variables
-        $this->RegisterVariableInteger("Control", "Control", "Control.SONOS");
-        $this->EnableAction("Control");
 
-        $this->RegisterVariableInteger("Volume", "Volume", "Intensity.100");
-        $this->EnableAction("Volume");
-        
+        //Create variables
+        $this->RegisterVariableInteger('Control', 'Control', 'Control.SONOS');
+        $this->EnableAction('Control');
+
+        $this->RegisterVariableInteger('Volume', 'Volume', 'Intensity.100');
+        $this->EnableAction('Volume');
     }
 
     public function ApplyChanges()
@@ -49,10 +48,9 @@ class SonosPlayer extends IPSModule
 
     public function RequestAction($Ident, $Value)
     {
-    
-        switch($Ident) {
-            case "Control":
-                switch($Value) {
+        switch ($Ident) {
+            case 'Control':
+                switch ($Value) {
                     case 0:
                         $this->SkipToPreviousTrack();
                         break;
@@ -70,48 +68,46 @@ class SonosPlayer extends IPSModule
                         break;
                 }
                 break;
-            case "Volume":
+            case 'Volume':
                 $this->SetVolume(intval($Value));
                 break;
         }
+    }
 
-    }    
-    
-    private function updateGroupID() {
-
+    private function updateGroupID()
+    {
         $groups = $this->getData('/v1/households/' . $this->ReadPropertyString('HouseholdID') . '/groups');
-    
+
         foreach ($groups->groups as $group) {
             foreach ($group->playerIds as $player) {
-                if($player == $this->ReadPropertyString("PlayerID")) {
-                    $this->WriteAttributeString("GroupID", $group->id);
+                if ($player == $this->ReadPropertyString('PlayerID')) {
+                    $this->WriteAttributeString('GroupID', $group->id);
                     return;
                 }
             }
         }
-            
-        throw new Exception("Cannot update GroupID. Player cannot be found in any group.");
-        
+
+        throw new Exception('Cannot update GroupID. Player cannot be found in any group.');
     }
-    
+
     private function Play()
     {
-        //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change 
+        //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change
         $this->updateGroupID();
-        
+
         $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/playback/play');
-        
-        $this->SetValue("Control", 1);
+
+        $this->SetValue('Control', 1);
     }
 
     private function Pause()
     {
-        //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change 
+        //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change
         $this->updateGroupID();
 
         $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/playback/pause');
 
-        $this->SetValue("Control", 2);
+        $this->SetValue('Control', 2);
     }
 
     //private function Stop()
@@ -122,45 +118,41 @@ class SonosPlayer extends IPSModule
 
     private function SkipToNextTrack()
     {
-        if($this->GetValue("Control") != 1) {
-            echo "Skipping is only available while playing";
+        if ($this->GetValue('Control') != 1) {
+            echo 'Skipping is only available while playing';
             return;
         }
-        
-        //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change 
+
+        //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change
         $this->updateGroupID();
 
         $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/playback/skipToNextTrack');
-
     }
 
     private function SkipToPreviousTrack()
     {
-        if($this->GetValue("Control") != 1) {
-            echo "Skipping is only available while playing";
+        if ($this->GetValue('Control') != 1) {
+            echo 'Skipping is only available while playing';
             return;
         }
-        
-        //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change 
+
+        //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change
         $this->updateGroupID();
 
         $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/playback/skipToPreviousTrack');
-
     }
 
     private function SetVolume($Volume)
     {
-        //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change 
+        //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change
         $this->updateGroupID();
 
         $result = $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume', json_encode(
             [
-                "volume" => $Volume
+                'volume' => $Volume
             ]
         ));
-        
-        $this->SetValue("Volume", $Volume);
-        
-    }    
-    
+
+        $this->SetValue('Volume', $Volume);
+    }
 }

@@ -7,7 +7,7 @@ include_once __DIR__ . '/../libs/data.php';
 class SonosConfigurator extends IPSModule
 {
     use DataHelper;
-    
+
     public function Create()
     {
         //Never delete this line!
@@ -36,9 +36,8 @@ class SonosConfigurator extends IPSModule
         $data = json_decode(file_get_contents(__DIR__ . '/form.json'));
 
         if ($this->HasActiveParent()) {
-            
             $groups = $this->getData('/v1/households/' . $this->ReadPropertyString('HouseholdID') . '/groups');
-            
+
             foreach ($groups->players as $player) {
                 $data->actions[0]->values[] = [
                     'address'    => $player->id,
@@ -53,7 +52,6 @@ class SonosConfigurator extends IPSModule
                     ]
                 ];
             }
-
         }
 
         return json_encode($data);
