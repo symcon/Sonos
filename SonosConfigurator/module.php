@@ -2,8 +2,12 @@
 
 declare(strict_types=1);
 
+include_once __DIR__ . '/../libs/data.php';
+
 class SonosConfigurator extends IPSModule
 {
+    use DataHelper;
+    
     public function Create()
     {
         //Never delete this line!
@@ -33,12 +37,8 @@ class SonosConfigurator extends IPSModule
 
         if ($this->HasActiveParent()) {
             
-            $groups = json_decode($this->SendDataToParent(json_encode([
-                'DataID'   => '{1E587107-664D-BA29-59E0-D9167875BE7E}',
-                'Endpoint' => '/v1/households/' . $this->ReadPropertyString('HouseholdID') . '/groups',
-                'Payload'  => ''
-            ])));
-
+            $groups = $this->getData('/v1/households/' . $this->ReadPropertyString('HouseholdID') . '/groups');
+            
             foreach ($groups->players as $player) {
                 $data->actions[0]->values[] = [
                     'address'    => $player->id,

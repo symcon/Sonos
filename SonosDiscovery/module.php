@@ -2,8 +2,12 @@
 
 declare(strict_types=1);
 
+include_once __DIR__ . '/../libs/data.php';
+
 class SonosDiscovery extends IPSModule
 {
+    use DataHelper;
+    
     public function Create()
     {
         //Never delete this line!
@@ -30,18 +34,10 @@ class SonosDiscovery extends IPSModule
         $data = json_decode(file_get_contents(__DIR__ . '/form.json'));
 
         if ($this->HasActiveParent()) {
-            $result = json_decode($this->SendDataToParent(json_encode([
-                'DataID'   => '{1E587107-664D-BA29-59E0-D9167875BE7E}',
-                'Endpoint' => '/v1/households',
-                'Payload'  => ''
-            ])));
+            $result = $this->getData('/v1/households');
 
             foreach ($result->households as $household) {
-                $groups = json_decode($this->SendDataToParent(json_encode([
-                    'DataID'   => '{1E587107-664D-BA29-59E0-D9167875BE7E}',
-                    'Endpoint' => '/v1/households/' . $household->id . '/groups',
-                    'Payload'  => ''
-                ])));
+                $groups = $this->getData('/v1/households/' . $household->id . '/groups');
 
                 $names = [];
                 foreach ($groups->players as $player) {
