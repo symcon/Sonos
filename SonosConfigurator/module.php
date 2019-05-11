@@ -35,7 +35,7 @@ class SonosConfigurator extends IPSModule
             
             $groups = json_decode($this->SendDataToParent(json_encode([
                 'DataID'   => '{1E587107-664D-BA29-59E0-D9167875BE7E}',
-                'Endpoint' => '/v1/households/' . $this->ReadPropertyString('HouseholdID') . '/groups:1',
+                'Endpoint' => '/v1/households/' . $this->ReadPropertyString('HouseholdID') . '/groups',
                 'Payload'  => ''
             ])));
 
