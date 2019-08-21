@@ -10,5 +10,6 @@
 	"parentRequirements": [],
 	"childRequirements": ["{4E70D5E9-7519-6728-2B3B-C203AF1C20BF}"],
 	"implemented": ["{1E587107-664D-BA29-59E0-D9167875BE7E}"],
-	"prefix": "SONOS"
+	"prefix": "SONOS",
+	"url": "https://www.symcon.de/service/dokumentation/modulreferenz/sonos/"
 }
