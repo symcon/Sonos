@@ -155,10 +155,9 @@ class SonosPlayer extends IPSModule
 
         $this->SetValue('Volume', $Volume);
     }
-    
+
     public function PlayClip()
     {
-
         $result = $this->postData('/v1/players/' . $this->ReadPropertyString('PlayerID') . '/audioClip', json_encode(
             [
                 'name'      => 'Test',
@@ -167,7 +166,5 @@ class SonosPlayer extends IPSModule
                 'clipType'  => 'CUSTOM'
             ]
         ));
-
     }
-    
 }
