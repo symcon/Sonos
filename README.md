@@ -1,8 +1,8 @@
 # Sonos für IP-Symcon 5.1
 
-<a href="https://www.symcon.de"><img src="https://img.shields.io/badge/IP--Symcon-5.1-blue.svg?style=flat-square"/></a>
-<a href="https://styleci.io/repos/185150981/"><img src="https://styleci.io/repos/185150981/shield" alt="StyleCI"></a>
-<a href="https://travis-ci.org/symcon/Sonos"><img src="https://img.shields.io/travis/symcon/Sonos/master.svg?style=flat-square" alt="Build status"></a>
+[![IP-Symcon is awesome!](https://img.shields.io/badge/IP--Symcon-5.0-blue.svg)](https://www.symcon.de)
+[![Check Style](https://github.com/symcon/SONOS/workflows/Check%20Style/badge.svg)](https://github.com/symcon/SONOS/actions)
+[![Run Tests](https://github.com/symcon/SONOS/workflows/Run%20Tests/badge.svg)](https://github.com/symcon/SONOS/actions)
 
 Folgende Module beinhaltet das Sonos Repository:
 
