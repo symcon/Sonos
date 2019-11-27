@@ -22,8 +22,12 @@ class SonosPlayer extends IPSModule
 
         $this->RegisterPropertyString('HouseholdID', '');
         $this->RegisterPropertyString('PlayerID', '');
+        $this->RegisterPropertyInteger('UpdateInterval', 10);
+
+        $this->RegisterTimer('SONOS_UpdateStatus', 0, 'SONOS_UpdateStatus($_IPS[\'TARGET\']);');
 
         $this->RegisterAttributeString('GroupID', '');
+        $this->RegisterAttributeString('Groups', '');
 
         //Create profiles
         $this->RegisterProfileIntegerEx('Control.SONOS', 'Information', '', '', [
