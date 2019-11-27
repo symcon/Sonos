@@ -186,7 +186,7 @@ class SonosPlayer extends IPSModule
     {
         $this->updateGroupID();
 
-        $result = $this->getData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume');
+        $result = $this->getData('/v1/players/' . $this->ReadPropertyString('PlayerID') . '/playerVolume');
 
         $this->SetValue('Volume', $result->volume);
         $this->SetValue('Mute', $result->muted);
@@ -276,7 +276,7 @@ class SonosPlayer extends IPSModule
         //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change
         $this->updateGroupID();
 
-        $result = $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume', json_encode(
+        $result = $this->postData('/v1/players/' . $this->ReadPropertyString('PlayerID') . '/playerVolume', json_encode(
             [
                 'volume' => $Volume
             ]
@@ -290,7 +290,7 @@ class SonosPlayer extends IPSModule
         //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change
         $this->updateGroupID();
 
-        $result = $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume/mute', json_encode(
+        $result = $this->postData('/v1/players/' . $this->ReadPropertyString('PlayerID') . '/playerVolume/mute', json_encode(
             [
                 'muted' => $Mute
             ]
