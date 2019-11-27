@@ -299,6 +299,40 @@ class SonosPlayer extends IPSModule
         $this->SetValue('Mute', $Mute);
     }
 
+    private function getGroupVolume()
+    {
+        $this->updateGroupID();
+
+        $result = $this->getData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume');
+
+        $this->SetValue('GroupVolume', $result->volume);
+        $this->SetValue('GroupMute', $result->muted);
+    }
+
+    private function setGroupMute($Mute)
+    {
+        $this->updateGroupID();
+
+        $result = $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume/mute', json_encode(
+            [
+                'muted' => $Mute
+            ]
+        ));
+        $this->SetValue('GroupMute', $Mute);
+    }
+
+    private function setGroupVolume($Volume)
+    {
+        $this->updateGroupID();
+
+        $result = $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume', json_encode(
+            [
+                'volume' => $Volume
+            ]
+        ));
+        $this->SetValue('GroupVolume', $Volume);
+    }
+
     private function updateGroups()
     {
         //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change
