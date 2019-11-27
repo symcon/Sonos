@@ -112,7 +112,7 @@ class SonosPlayer extends IPSModule
                 break;
             case 'Mute':
                 $this->setMute($Value);
-                // FIXME: No break. Please add proper comment if intentional
+                break;
             case 'GroupMute':
                 $this->setGroupMute($Value);
                 break;
