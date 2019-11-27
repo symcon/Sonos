@@ -9,7 +9,12 @@
             "type": "ValidationTextBox",
             "name": "PlayerID",
             "caption": "PlayerID"
-        }
+        },
+        {
+            "name": "UpdateInterval",
+            "type": "IntervalBox",
+            "caption": "Seconds"
+          }
     ],
     "actions": [
         {

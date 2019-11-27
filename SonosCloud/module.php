@@ -181,7 +181,7 @@ class SonosCloud extends IPSModule
         $opts = [
             'http'=> [
                 'method'        => 'GET',
-                'header'        => 'Authorization: Bearer ' . $this->FetchAccessToken() . "\r\n" . 'Content-Type: application/x-www-form-urlencoded' . "\r\n",
+                'header'        => 'Authorization: Bearer ' . $this->FetchAccessToken() . "\r\n" . 'Content-Type: application/json' . "\r\n",
                 'ignore_errors' => true
             ]
         ];
