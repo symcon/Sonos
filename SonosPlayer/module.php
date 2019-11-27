@@ -39,17 +39,42 @@ class SonosPlayer extends IPSModule
         ]);
 
         //Create variables
-        $this->RegisterVariableInteger('Control', 'Control', 'Control.SONOS');
+        $this->RegisterVariableString('Service', 'Service', '', 1);
+        $this->RegisterVariableString('Artist', 'Artist', '', 2);
+        $this->RegisterVariableString('Track', 'Track', '', 3);
+        $this->RegisterVariableString('Album', 'Album', '', 4);
+
+        $this->RegisterVariableInteger('Control', 'Control', 'Control.SONOS', 5);
         $this->EnableAction('Control');
 
-        $this->RegisterVariableInteger('Volume', 'Volume', 'Intensity.100');
+        $this->RegisterVariableInteger('Volume', 'Volume', 'Intensity.100', 6);
         $this->EnableAction('Volume');
+
+        $this->RegisterVariableBoolean('Mute', 'Mute', '~Switch', 7);
+        $this->EnableAction('Mute');
+
+        //Media Image
+        if (!@IPS_GetObjectIDByIdent('MediaImage', $this->InstanceID)) {
+            $MediaID = IPS_CreateMedia(1);
+            IPS_SetParent($MediaID, $this->InstanceID);
+            IPS_SetIdent($MediaID, 'MediaImage');
+            IPS_SetPosition($MediaID, 0);
+            IPS_SetName($MediaID, $this->Translate('Media Image'));
+            $ImageFile = IPS_GetKernelDir() . 'media' . DIRECTORY_SEPARATOR . 'Sonos_' . $this->InstanceID;
+            IPS_SetMediaFile($MediaID, $ImageFile, false);
+            IPS_SetMediaContent($this->GetIDForIdent('MediaImage'), base64_encode($this->mediaCover));
+        }
     }
 
     public function ApplyChanges()
     {
         //Never delete this line!
         parent::ApplyChanges();
+
+        $this->UpdateGroups();
+        $this->RegisterVariableInteger('Groups', 'Groups', 'Groups.SONOS', 8);
+        $this->EnableAction('Groups');
+        $this->SetTimerInterval('SONOS_UpdateStatus', $this->ReadPropertyInteger('UpdateInterval') * 1000);
     }
 
     public function RequestAction($Ident, $Value)
