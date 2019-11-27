@@ -102,6 +102,92 @@ class SonosPlayer extends IPSModule
             case 'Volume':
                 $this->SetVolume(intval($Value));
                 break;
+            case 'Mute':
+                $this->SetMute($Value);
+                break;
+            case 'Groups':
+                $PlayerID = $this->ReadPropertyString('PlayerID');
+                switch ($Value) {
+                    case 0:
+                        $GroupID = $this->ReadAttributeString('GroupID');
+                        $this->ModifyGroupMembers($GroupID, [], [$PlayerID]);
+                        break;
+                    default:
+                        $Groups = json_decode($this->ReadAttributeString('Groups'), false);
+                        $GroupID = $Groups[$Value][4];
+                        $this->ModifyGroupMembers($GroupID, [$PlayerID], []);
+                    break;
+                }
+            break;
+        }
+    }
+
+    public function UpdateStatus()
+    {
+        $this->getMetadataStatus();
+        $this->getVolume();
+        $this->UpdateGroups();
+        $this->refreshGroupValue();
+    }
+
+    public function PlayClip()
+    {
+        $result = $this->postData('/v1/players/' . $this->ReadPropertyString('PlayerID') . '/audioClip', json_encode(
+            [
+                'name'      => 'Test',
+                'appId'     => 'de.symcon.app',
+                'streamUrl' => 'http://www.moviesoundclips.net/effects/animals/wolf-howls.mp3',
+                'clipType'  => 'CUSTOM'
+            ]
+        ));
+    }
+
+    private function getMetadataStatus()
+    {
+        $this->updateGroupID();
+
+        $result = $this->getData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/playbackMetadata');
+
+        if (property_exists($result, 'currentItem')) {
+            $this->SetValue('Artist', $result->currentItem->track->artist->name);
+            $this->SetValue('Track', $result->currentItem->track->name);
+            $this->SetValue('Album', $result->currentItem->track->album->name);
+            $Content = base64_encode(file_get_contents($result->currentItem->track->imageUrl));
+        } else {
+            $this->SetValue('Artist', $result->container->name);
+            if (property_exists($result, 'streamInfo')) {
+                $this->SetValue('Track', $result->streamInfo);
+            } else {
+                $this->SetValue('Track', '-');
+            }
+            $this->SetValue('Album', '-');
+            $Content = $this->mediaCover;
+        }
+
+        $this->SetValue('Service', $result->container->service->name);
+
+        IPS_SetMediaContent($this->GetIDForIdent('MediaImage'), $Content);
+        IPS_SendMediaEvent($this->GetIDForIdent('MediaImage'));
+    }
+
+    private function getVolume()
+    {
+        $this->updateGroupID();
+
+        $result = $this->getData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume');
+
+        $this->SetValue('Volume', $result->volume);
+        $this->SetValue('Mute', $result->muted);
+    }
+
+    private function refreshGroupValue()
+    {
+        $GroupID = $this->ReadAttributeString('GroupID');
+        $groups = json_decode($this->ReadAttributeString('Groups'), false);
+        foreach ($groups as $group) {
+            if ($group[4] == $GroupID) {
+                $this->SetValue('Groups', $group[0]);
+            }
         }
     }
 
