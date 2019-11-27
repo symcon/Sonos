@@ -273,15 +273,71 @@ class SonosPlayer extends IPSModule
         $this->SetValue('Volume', $Volume);
     }
 
-    public function PlayClip()
+    private function SetMute($Mute)
     {
-        $result = $this->postData('/v1/players/' . $this->ReadPropertyString('PlayerID') . '/audioClip', json_encode(
+        //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change
+        $this->updateGroupID();
+
+        $result = $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume/mute', json_encode(
             [
-                'name'      => 'Test',
-                'appId'     => 'de.symcon.app',
-                'streamUrl' => 'http://www.moviesoundclips.net/effects/animals/wolf-howls.mp3',
-                'clipType'  => 'CUSTOM'
+                'muted' => $Mute
             ]
         ));
+
+        $this->SetValue('Mute', $Mute);
+    }
+
+    private function UpdateGroups()
+    {
+        //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change
+
+        $Associations = [];
+        if ($this->ReadPropertyString('HouseholdID') != '') {
+            $this->updateGroupID();
+
+            $groups = $this->getData('/v1/households/' . $this->ReadPropertyString('HouseholdID') . '/groups');
+
+            $Association[0] = 0;
+            $Association[1] = 'None';
+            $Association[2] = '';
+            $Association[3] = -1;
+            $Association[4] = '';
+            $Associations[] = $Association;
+
+            $i = 1;
+            foreach ($groups->groups as $group) {
+                $Association[0] = $i;
+                $Association[1] = $group->name;
+                $Association[2] = '';
+                $Association[3] = -1;
+                $Association[4] = $group->id;
+                $Associations[] = $Association;
+                $i++;
+            }
+
+            $countOldAssociations = count(IPS_GetVariableProfile('Groups.SONOS')['Associations']);
+            if ($countOldAssociations > count($Associations)) {
+                if (IPS_VariableProfileExists('Groups.SONOS')) {
+                    for ($i = 0; $i <= $countOldAssociations - 1; $i++) {
+                        IPS_SetVariableProfileAssociation('Groups.SONOS', $i, '', '', -1);
+                    }
+                }
+            }
+        }
+        $this->WriteAttributeString('Groups', json_encode($Associations));
+        $this->RegisterProfileIntegerEx('Groups.SONOS', 'Information', '', '', $Associations);
+    }
+
+    private function ModifyGroupMembers($GroupID, $MembersToAdd, $MembersToRemove)
+    {
+        $result = $this->postData('/v1/groups/' . $GroupID . '/groups/modifyGroupMembers', json_encode(
+            [
+                'playerIdsToAdd'    => $MembersToAdd,
+                'playerIdsToRemove' => $MembersToRemove
+            ]
+        ));
+        $this->updateGroupID();
+        $this->UpdateGroups();
+        $this->refreshGroupValue();
     }
 }
