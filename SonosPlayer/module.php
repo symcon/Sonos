@@ -77,7 +77,7 @@ class SonosPlayer extends IPSModule
         parent::ApplyChanges();
 
         $this->updateGroups();
-        $this->RegisterVariableInteger('Groups', 'Groups', 'Groups.SONOS', 8);
+        $this->RegisterVariableInteger('Groups', $this->Translate('Groups'), 'Groups.SONOS', 8);
         $this->EnableAction('Groups');
         $this->SetTimerInterval('SONOS_UpdateStatus', $this->ReadPropertyInteger('UpdateInterval') * 1000);
     }
