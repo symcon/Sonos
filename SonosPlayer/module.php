@@ -37,19 +37,25 @@ class SonosPlayer extends IPSModule
         ]);
 
         //Create variables
-        $this->RegisterVariableString('Service', 'Service', '', 1);
-        $this->RegisterVariableString('Artist', 'Artist', '', 2);
-        $this->RegisterVariableString('Track', 'Track', '', 3);
-        $this->RegisterVariableString('Album', 'Album', '', 4);
+        $this->RegisterVariableString('Service', $this->Translate('Service'), '', 1);
+        $this->RegisterVariableString('Artist', $this->Translate('Artist'), '', 2);
+        $this->RegisterVariableString('Track', $this->Translate('Track'), '', 3);
+        $this->RegisterVariableString('Album', $this->Translate('Album'), '', 4);
 
-        $this->RegisterVariableInteger('Control', 'Control', 'Control.SONOS', 5);
+        $this->RegisterVariableInteger('Control', $this->Translate('Control'), 'Control.SONOS', 5);
         $this->EnableAction('Control');
 
-        $this->RegisterVariableInteger('Volume', 'Volume', 'Intensity.100', 6);
+        $this->RegisterVariableInteger('Volume', $this->Translate('Volume'), 'Intensity.100', 6);
         $this->EnableAction('Volume');
 
-        $this->RegisterVariableBoolean('Mute', 'Mute', '~Switch', 7);
+        $this->RegisterVariableBoolean('Mute', $this->Translate('Mute'), '~Switch', 7);
         $this->EnableAction('Mute');
+
+        $this->RegisterVariableInteger('GroupVolume', $this->Translate('Group Volume'), 'Intensity.100', 15);
+        $this->EnableAction('GroupVolume');
+
+        $this->RegisterVariableBoolean('GroupMute', $this->Translate('Group Mute'), '~Switch', 16);
+        $this->EnableAction('GroupMute');
 
         //Media Image
         if (!@IPS_GetObjectIDByIdent('MediaImage', $this->InstanceID)) {
@@ -57,7 +63,7 @@ class SonosPlayer extends IPSModule
             IPS_SetParent($MediaID, $this->InstanceID);
             IPS_SetIdent($MediaID, 'MediaImage');
             IPS_SetPosition($MediaID, 0);
-            IPS_SetName($MediaID, $this->Translate('Media Image'));
+            IPS_SetName($MediaID, $this->Translate('Cover'));
             $ImageFile = IPS_GetKernelDir() . 'media' . DIRECTORY_SEPARATOR . 'Sonos_' . $this->InstanceID;
             IPS_SetMediaFile($MediaID, $ImageFile, false);
             $Content = file_get_contents(__DIR__ . '/../libs/noCover.png');
