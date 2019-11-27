@@ -1,0 +1,17 @@
+{
+    "translations": {
+      "de": {
+        "Volume": "Lautstärke",
+        "Mute": "Stumm",
+        "Group Volume": "Gruppen Lautstärke",
+        "Group Mute": "Gruppe Stumm",
+        "Groups": "Gruppen",
+        "Control": "Steuerung",
+        "Service": "Service",
+        "Artist": "Künstler",
+        "Album": "Album",
+        "Track": "Titel",
+        "Seconds": "Sekunden"
+      }
+    }
+  }
