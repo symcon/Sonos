@@ -137,6 +137,7 @@ class SonosPlayer extends IPSModule
     {
         $this->getMetadataStatus();
         $this->getVolume();
+        $this->getGroupVolume();
         $this->updateGroups();
         $this->refreshGroupValue();
     }
