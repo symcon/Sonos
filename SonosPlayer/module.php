@@ -37,19 +37,25 @@ class SonosPlayer extends IPSModule
         ]);
 
         //Create variables
-        $this->RegisterVariableString('Service', 'Service', '', 1);
-        $this->RegisterVariableString('Artist', 'Artist', '', 2);
-        $this->RegisterVariableString('Track', 'Track', '', 3);
-        $this->RegisterVariableString('Album', 'Album', '', 4);
+        $this->RegisterVariableString('Service', $this->Translate('Service'), '', 1);
+        $this->RegisterVariableString('Artist', $this->Translate('Artist'), '', 2);
+        $this->RegisterVariableString('Track', $this->Translate('Track'), '', 3);
+        $this->RegisterVariableString('Album', $this->Translate('Album'), '', 4);
 
-        $this->RegisterVariableInteger('Control', 'Control', 'Control.SONOS', 5);
+        $this->RegisterVariableInteger('Control', $this->Translate('Control'), 'Control.SONOS', 5);
         $this->EnableAction('Control');
 
-        $this->RegisterVariableInteger('Volume', 'Volume', 'Intensity.100', 6);
+        $this->RegisterVariableInteger('Volume', $this->Translate('Volume'), 'Intensity.100', 6);
         $this->EnableAction('Volume');
 
-        $this->RegisterVariableBoolean('Mute', 'Mute', '~Switch', 7);
+        $this->RegisterVariableBoolean('Mute', $this->Translate('Mute'), '~Switch', 7);
         $this->EnableAction('Mute');
+
+        $this->RegisterVariableInteger('GroupVolume', $this->Translate('Group Volume'), 'Intensity.100', 15);
+        $this->EnableAction('GroupVolume');
+
+        $this->RegisterVariableBoolean('GroupMute', $this->Translate('Group Mute'), '~Switch', 16);
+        $this->EnableAction('GroupMute');
 
         //Media Image
         if (!@IPS_GetObjectIDByIdent('MediaImage', $this->InstanceID)) {
@@ -57,7 +63,7 @@ class SonosPlayer extends IPSModule
             IPS_SetParent($MediaID, $this->InstanceID);
             IPS_SetIdent($MediaID, 'MediaImage');
             IPS_SetPosition($MediaID, 0);
-            IPS_SetName($MediaID, $this->Translate('Media Image'));
+            IPS_SetName($MediaID, $this->Translate('Cover'));
             $ImageFile = IPS_GetKernelDir() . 'media' . DIRECTORY_SEPARATOR . 'Sonos_' . $this->InstanceID;
             IPS_SetMediaFile($MediaID, $ImageFile, false);
             $Content = file_get_contents(__DIR__ . '/../libs/noCover.png');
@@ -71,7 +77,7 @@ class SonosPlayer extends IPSModule
         parent::ApplyChanges();
 
         $this->updateGroups();
-        $this->RegisterVariableInteger('Groups', 'Groups', 'Groups.SONOS', 8);
+        $this->RegisterVariableInteger('Groups', $this->Translate('Groups'), 'Groups.SONOS', 8);
         $this->EnableAction('Groups');
         $this->SetTimerInterval('SONOS_UpdateStatus', $this->ReadPropertyInteger('UpdateInterval') * 1000);
     }
@@ -101,8 +107,14 @@ class SonosPlayer extends IPSModule
             case 'Volume':
                 $this->setVolume(intval($Value));
                 break;
+            case 'GroupVolume':
+                $this->setGroupVolume(intval($Value));
+                break;
             case 'Mute':
                 $this->setMute($Value);
+                break;
+            case 'GroupMute':
+                $this->setGroupMute($Value);
                 break;
             case 'Groups':
                 $PlayerID = $this->ReadPropertyString('PlayerID');
@@ -125,6 +137,7 @@ class SonosPlayer extends IPSModule
     {
         $this->getMetadataStatus();
         $this->getVolume();
+        $this->getGroupVolume();
         $this->updateGroups();
         $this->refreshGroupValue();
     }
@@ -173,7 +186,7 @@ class SonosPlayer extends IPSModule
     {
         $this->updateGroupID();
 
-        $result = $this->getData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume');
+        $result = $this->getData('/v1/players/' . $this->ReadPropertyString('PlayerID') . '/playerVolume');
 
         $this->SetValue('Volume', $result->volume);
         $this->SetValue('Mute', $result->muted);
@@ -263,7 +276,7 @@ class SonosPlayer extends IPSModule
         //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change
         $this->updateGroupID();
 
-        $result = $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume', json_encode(
+        $result = $this->postData('/v1/players/' . $this->ReadPropertyString('PlayerID') . '/playerVolume', json_encode(
             [
                 'volume' => $Volume
             ]
@@ -277,13 +290,47 @@ class SonosPlayer extends IPSModule
         //we should remove this and replace it with a subscribe approach that automatically updated the GroupID upon change
         $this->updateGroupID();
 
-        $result = $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume/mute', json_encode(
+        $result = $this->postData('/v1/players/' . $this->ReadPropertyString('PlayerID') . '/playerVolume/mute', json_encode(
             [
                 'muted' => $Mute
             ]
         ));
 
         $this->SetValue('Mute', $Mute);
+    }
+
+    private function getGroupVolume()
+    {
+        $this->updateGroupID();
+
+        $result = $this->getData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume');
+
+        $this->SetValue('GroupVolume', $result->volume);
+        $this->SetValue('GroupMute', $result->muted);
+    }
+
+    private function setGroupMute($Mute)
+    {
+        $this->updateGroupID();
+
+        $result = $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume/mute', json_encode(
+            [
+                'muted' => $Mute
+            ]
+        ));
+        $this->SetValue('GroupMute', $Mute);
+    }
+
+    private function setGroupVolume($Volume)
+    {
+        $this->updateGroupID();
+
+        $result = $this->postData('/v1/groups/' . $this->ReadAttributeString('GroupID') . '/groupVolume', json_encode(
+            [
+                'volume' => $Volume
+            ]
+        ));
+        $this->SetValue('GroupVolume', $Volume);
     }
 
     private function updateGroups()
