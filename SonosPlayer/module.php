@@ -107,8 +107,14 @@ class SonosPlayer extends IPSModule
             case 'Volume':
                 $this->setVolume(intval($Value));
                 break;
+            case 'GroupVolume':
+                $this->setGroupVolume(intval($Value));
+                break;
             case 'Mute':
                 $this->setMute($Value);
+                // FIXME: No break. Please add proper comment if intentional
+            case 'GroupMute':
+                $this->setGroupMute($Value);
                 break;
             case 'Groups':
                 $PlayerID = $this->ReadPropertyString('PlayerID');
