@@ -14,7 +14,7 @@
             "name": "UpdateInterval",
             "type": "IntervalBox",
             "caption": "Seconds"
-          }
+        }
     ],
     "actions": [
         {

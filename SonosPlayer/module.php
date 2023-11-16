@@ -96,9 +96,9 @@ class SonosPlayer extends IPSModule
                     case 2:
                         $this->Pause();
                         break;
-                    //case 3:
-                    //    $this->Stop();
-                    //    break;
+                        //case 3:
+                        //    $this->Stop();
+                        //    break;
                     case 4:
                         $this->skipToNextTrack();
                         break;
@@ -127,9 +127,9 @@ class SonosPlayer extends IPSModule
                         $Groups = json_decode($this->ReadAttributeString('Groups'), false);
                         $GroupID = $Groups[$Value][4];
                         $this->modifyGroupMembers($GroupID, [$PlayerID], []);
-                    break;
+                        break;
                 }
-            break;
+                break;
         }
     }
 

@@ -17,18 +17,6 @@ class SonosDiscovery extends IPSModule
         $this->ConnectParent('{B82CE443-9F35-81F0-9D04-B6323D558CCA}');
     }
 
-    private function searchHouseholdConfigurator($householdID)
-    {
-        $ids = IPS_GetInstanceListByModuleID('{751A1E6A-76D5-4EF1-B15D-D7A0CECC75D0}');
-        foreach ($ids as $id) {
-            if (IPS_GetProperty($id, 'HouseholdID') == $householdID) {
-                return $id;
-            }
-        }
-
-        return 0;
-    }
-
     public function GetConfigurationForm()
     {
         $data = json_decode(file_get_contents(__DIR__ . '/form.json'));
@@ -59,5 +47,17 @@ class SonosDiscovery extends IPSModule
         }
 
         return json_encode($data);
+    }
+
+    private function searchHouseholdConfigurator($householdID)
+    {
+        $ids = IPS_GetInstanceListByModuleID('{751A1E6A-76D5-4EF1-B15D-D7A0CECC75D0}');
+        foreach ($ids as $id) {
+            if (IPS_GetProperty($id, 'HouseholdID') == $householdID) {
+                return $id;
+            }
+        }
+
+        return 0;
     }
 }
