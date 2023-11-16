@@ -19,18 +19,6 @@ class SonosConfigurator extends IPSModule
         $this->RegisterPropertyString('HouseholdID', '');
     }
 
-    private function searchPlayerDevice($playerID)
-    {
-        $ids = IPS_GetInstanceListByModuleID('{53915378-C64C-4566-8369-618B6ECDB5B4}');
-        foreach ($ids as $id) {
-            if (IPS_GetProperty($id, 'PlayerID') == $playerID) {
-                return $id;
-            }
-        }
-
-        return 0;
-    }
-
     public function GetConfigurationForm()
     {
         $data = json_decode(file_get_contents(__DIR__ . '/form.json'));
@@ -55,5 +43,17 @@ class SonosConfigurator extends IPSModule
         }
 
         return json_encode($data);
+    }
+
+    private function searchPlayerDevice($playerID)
+    {
+        $ids = IPS_GetInstanceListByModuleID('{53915378-C64C-4566-8369-618B6ECDB5B4}');
+        foreach ($ids as $id) {
+            if (IPS_GetProperty($id, 'PlayerID') == $playerID) {
+                return $id;
+            }
+        }
+
+        return 0;
     }
 }

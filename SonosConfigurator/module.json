@@ -3,13 +3,16 @@
     "name": "Sonos Configurator",
     "type": 4,
     "vendor": "Sonos",
-    "aliases": 
-    [
+    "aliases": [
         "Sonos Configurator"
     ],
-	"parentRequirements": ["{1E587107-664D-BA29-59E0-D9167875BE7E}"],
-	"childRequirements": [],
-	"implemented": ["{4E70D5E9-7519-6728-2B3B-C203AF1C20BF}"],
+    "parentRequirements": [
+        "{1E587107-664D-BA29-59E0-D9167875BE7E}"
+    ],
+    "childRequirements": [],
+    "implemented": [
+        "{4E70D5E9-7519-6728-2B3B-C203AF1C20BF}"
+    ],
     "prefix": "SONOS",
     "url": "https://www.symcon.de/service/dokumentation/modulreferenz/sonos/"
 }
